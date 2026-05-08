@@ -9,9 +9,10 @@ import org.koin.dsl.module
 
 /**
  * Bindings that can only be provided by the `:app` module:
- *  - `InstagramOAuthConfig`: pulled from `BuildConfig`, which is generated
- *    for the application module from `local.properties`. `:data` deliberately
- *    has no knowledge of `BuildConfig` so this lives here.
+ *  - `InstagramOAuthConfig`: Android-side credentials sourced from
+ *    `BuildConfig`, which is generated for the application module from
+ *    `secrets.properties`. `:data` deliberately has no knowledge of
+ *    `BuildConfig` so this lives here.
  *  - `OAuthLauncher`: the Android-platform implementation of the OAuth
  *    browser launch (Custom Tabs). Other ports of the app would supply a
  *    different implementation.
@@ -26,16 +27,9 @@ val appModule = module {
         InstagramOAuthConfig(
             clientId = BuildConfig.INSTAGRAM_CLIENT_ID,
             clientSecret = BuildConfig.INSTAGRAM_CLIENT_SECRET,
-            redirectUri = buildRedirectUri(),
+            redirectUri = InstagramOAuthConfig.REDIRECT_URI,
         )
     }
 
     single<OAuthLauncher> { CustomTabsOAuthLauncher(androidContext()) }
-}
-
-private fun buildRedirectUri(): String {
-    val path = BuildConfig.INSTAGRAM_REDIRECT_PATH.takeIf { it.isNotEmpty() }
-        ?.let { if (it.startsWith("/")) it else "/$it" }
-        .orEmpty()
-    return "${BuildConfig.INSTAGRAM_REDIRECT_SCHEME}://${BuildConfig.INSTAGRAM_REDIRECT_HOST}$path"
 }

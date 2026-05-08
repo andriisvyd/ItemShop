@@ -6,16 +6,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val localProperties = Properties().apply {
-    val f = rootProject.file("local.properties")
+val secretsProperties = Properties().apply {
+    val f = rootProject.file("secrets.properties")
     if (f.exists()) f.inputStream().use(::load)
 }
 
-val instagramClientId: String = localProperties.getProperty("instagram.clientId", "")
-val instagramClientSecret: String = localProperties.getProperty("instagram.clientSecret", "")
-val instagramRedirectScheme: String = localProperties.getProperty("instagram.redirect.scheme", "itemshop")
-val instagramRedirectHost: String = localProperties.getProperty("instagram.redirect.host", "oauth")
-val instagramRedirectPath: String = localProperties.getProperty("instagram.redirect.path", "/callback")
+val instagramClientId: String = secretsProperties.getProperty("instagram.clientId", "")
+val instagramClientSecret: String = secretsProperties.getProperty("instagram.clientSecret", "")
 
 android {
     namespace = "com.svyd.itemshop"
@@ -36,13 +33,6 @@ android {
 
         buildConfigField("String", "INSTAGRAM_CLIENT_ID", "\"$instagramClientId\"")
         buildConfigField("String", "INSTAGRAM_CLIENT_SECRET", "\"$instagramClientSecret\"")
-        buildConfigField("String", "INSTAGRAM_REDIRECT_SCHEME", "\"$instagramRedirectScheme\"")
-        buildConfigField("String", "INSTAGRAM_REDIRECT_HOST", "\"$instagramRedirectHost\"")
-        buildConfigField("String", "INSTAGRAM_REDIRECT_PATH", "\"$instagramRedirectPath\"")
-
-        manifestPlaceholders["oauthRedirectScheme"] = instagramRedirectScheme
-        manifestPlaceholders["oauthRedirectHost"] = instagramRedirectHost
-        manifestPlaceholders["oauthRedirectPath"] = instagramRedirectPath
     }
 
     buildTypes {

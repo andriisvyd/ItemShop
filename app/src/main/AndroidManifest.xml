@@ -32,14 +32,14 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter android:autoVerify="false">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="${oauthRedirectScheme}"
-                    android:host="${oauthRedirectHost}"
-                    android:path="${oauthRedirectPath}" />
+                    android:scheme="https"
+                    android:host="item-shop.pages.dev"
+                    android:path="/oauth/callback" />
             </intent-filter>
         </activity>
 

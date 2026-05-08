@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 internal data class AccessTokenResponseDto(
     @SerialName("access_token") val accessToken: String,
     @SerialName("user_id") val userId: Long,
-    @SerialName("permissions") val permissions: String? = null,
+    @SerialName("permissions") val permissions: List<String>? = null,
 )
 
 /**
