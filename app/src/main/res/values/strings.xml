@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">Item Shop</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome to Item Shop</string>
+    <string name="login_subtitle">Turn your Instagram posts into shop items.</string>
+    <string name="login_with_instagram">Continue with Instagram</string>
+    <string name="login_error_generic">Sign-in failed. Please try again.</string>
+
+    <!-- Products -->
+    <string name="products_title">Your products</string>
+    <string name="products_empty_title">No products yet</string>
+    <string name="products_empty_subtitle">Tap + to create one from an Instagram post.</string>
+    <string name="products_add">Add product</string>
+    <string name="products_logout">Sign out</string>
+
+    <!-- Posts -->
+    <string name="posts_title">Pick an Instagram post</string>
+    <string name="posts_empty_title">No posts found</string>
+    <string name="posts_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
+
+    <!-- Edit product -->
+    <string name="edit_product_title_create">New product</string>
+    <string name="edit_product_title_edit">Edit product</string>
+    <string name="edit_product_field_title">Title</string>
+    <string name="edit_product_field_description">Description</string>
+    <string name="edit_product_field_price">Price</string>
+    <string name="edit_product_save">Save</string>
+    <string name="edit_product_cancel">Cancel</string>
+
+    <!-- Errors -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_unknown">Something went wrong.</string>
+    <string name="action_retry">Retry</string>
 </resources>
