@@ -20,6 +20,12 @@ dependencies {
     api(libs.kotlinx.serialization.json)
     api(libs.kotlinx.datetime)
 
+    // Koin: each layer module owns its own DI bindings, so :domain exposes
+    // Koin `Module` instances. `api` because the return type is part of the
+    // public surface of this module.
+    api(platform(libs.koin.bom))
+    api(libs.koin.core)
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)

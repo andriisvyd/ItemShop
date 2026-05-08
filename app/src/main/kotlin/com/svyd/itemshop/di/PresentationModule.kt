@@ -1,5 +1,9 @@
 package com.svyd.itemshop.di
 
+import com.svyd.itemshop.feature.auth.AuthGateViewModel
+import com.svyd.itemshop.feature.auth.LoginViewModel
+import com.svyd.itemshop.feature.auth.SignOutViewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -8,4 +12,8 @@ import org.koin.dsl.module
  * `koinViewModel()` Composables.
  */
 val presentationModule = module {
+
+    viewModelOf(::AuthGateViewModel)
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::SignOutViewModel)
 }

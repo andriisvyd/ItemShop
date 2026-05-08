@@ -1,10 +1,11 @@
 package com.svyd.itemshop
 
 import android.app.Application
+import com.svyd.itemshop.data.auth.di.authDataModule
+import com.svyd.itemshop.data.common.di.commonDataModule
 import com.svyd.itemshop.di.appModule
-import com.svyd.itemshop.di.dataModule
-import com.svyd.itemshop.di.domainModule
 import com.svyd.itemshop.di.presentationModule
+import com.svyd.itemshop.domain.auth.di.authDomainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,10 +18,15 @@ class ItemShopApplication : Application() {
             androidLogger(if (BuildConfig.DEBUG) Level.INFO else Level.ERROR)
             androidContext(this@ItemShopApplication)
             modules(
+                // App-only bindings (Android plumbing, BuildConfig values).
                 appModule,
-                domainModule,
-                dataModule,
                 presentationModule,
+                // Layer modules: each layer owns its own DI bindings, which
+                // keeps internals encapsulated and lets features migrate
+                // (or move to KMP) without touching the wiring.
+                authDomainModule,
+                commonDataModule(enableHttpLogging = BuildConfig.DEBUG),
+                authDataModule,
             )
         }
     }
