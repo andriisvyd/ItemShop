@@ -19,15 +19,11 @@ sealed interface Route {
     data object Posts : Route
 
     /**
-     * Create-or-edit screen.
-     *
-     * @param productId existing product to edit, or null to create.
-     * @param sourcePostId Instagram post the new product is derived from
-     *                     (used only on creation).
+     * Edit (or create) a product. The `id` is the originating Instagram
+     * media id; the screen looks up the product locally and falls back to
+     * fetching the post and building a fresh draft if no local record
+     * exists yet.
      */
     @Serializable
-    data class EditProduct(
-        val productId: String? = null,
-        val sourcePostId: String? = null,
-    ) : Route
+    data class EditProduct(val id: String) : Route
 }
