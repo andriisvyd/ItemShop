@@ -9,7 +9,6 @@ import com.svyd.itemshop.domain.products.Price
 import com.svyd.itemshop.domain.products.ProductDraft
 import com.svyd.itemshop.domain.products.ProductId
 import com.svyd.itemshop.domain.products.usecase.BuildProductDraftFromPostUseCase
-import com.svyd.itemshop.domain.products.usecase.GetProductUseCase
 import com.svyd.itemshop.domain.products.usecase.SaveProductUseCase
 import com.svyd.itemshop.ui.error.toUserMessage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,17 +18,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * Drives the edit screen. Identity is the originating Instagram media id,
- * received via [id]. Init logic:
- *   - Look up the product locally by id.
- *   - If found → enter `Edit` mode pre-filled from the local product.
- *   - Otherwise → fetch the Instagram post by the same id and build a
- *     fresh draft, entering `Create` mode.
- *   - If the post can't be fetched / found, surface a [LoadFailed] state.
+ * Drives the create-product screen. The Instagram media id is received via
+ * [id]; the screen fetches the post, builds a draft, and exposes it for
+ * editing. It is the caller's responsibility (PostsListViewModel) to
+ * ensure the post isn't already a saved product before navigating here.
+ *
+ * Editing existing products is intentionally not supported in v1.
  */
 class EditProductViewModel(
     private val id: String,
-    private val getProduct: GetProductUseCase,
     private val getInstagramPost: GetInstagramPostUseCase,
     private val buildDraftFromPost: BuildProductDraftFromPostUseCase,
     private val saveProduct: SaveProductUseCase,
@@ -43,22 +40,6 @@ class EditProductViewModel(
     }
 
     private suspend fun initialise() {
-        val productId = ProductId(id)
-        val existing = getProduct(productId)
-        if (existing != null) {
-            _state.value = EditProductUiState.Editing(
-                mode = EditProductUiState.Mode.Edit,
-                form = ProductFormState(
-                    productId = existing.id.raw,
-                    title = existing.title,
-                    priceAmount = existing.price?.let(::formatAmount).orEmpty(),
-                    priceCurrency = existing.price?.currency?.raw.orEmpty(),
-                    coverImageUrl = existing.coverImageUrl,
-                ),
-            )
-            return
-        }
-
         when (val result = getInstagramPost(id)) {
             is DomainResult.Success -> {
                 val post = result.value
@@ -68,7 +49,6 @@ class EditProductViewModel(
                 }
                 val draft = buildDraftFromPost(post)
                 _state.value = EditProductUiState.Editing(
-                    mode = EditProductUiState.Mode.Create,
                     form = ProductFormState(
                         productId = draft.id.raw,
                         title = draft.title,

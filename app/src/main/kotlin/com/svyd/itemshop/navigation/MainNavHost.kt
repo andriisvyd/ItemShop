@@ -7,18 +7,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.svyd.itemshop.feature.auth.SignOutViewModel
 import com.svyd.itemshop.feature.posts.PostsListScreen
+import com.svyd.itemshop.feature.products.details.ProductDetailsScreen
 import com.svyd.itemshop.feature.products.edit.EditProductScreen
 import com.svyd.itemshop.feature.products.list.ProductsListScreen
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Navigation graph used when the user is authenticated. Three destinations:
+ * Navigation graph used when the user is authenticated. Four destinations:
  *   - `Products`: the user's product list (start).
- *   - `Posts`: pick an Instagram post to base a new product on.
- *   - `EditProduct(id)`: open the product whose id == the Instagram media id.
- *     The same destination handles both "edit existing" and "create from
- *     post"; the screen resolves which based on whether the product is
- *     already in the local DB.
+ *   - `Posts`: pick an Instagram post. The screen itself decides whether
+ *     the picked post becomes a new product (→ EditProduct) or opens an
+ *     existing one (→ ProductDetails).
+ *   - `ProductDetails(id)`: read-only details of an existing product.
+ *   - `EditProduct(id)`: create a product from an Instagram post that is
+ *     not yet a product.
  *
  * The graph is intentionally flat. Sign-out lives in `Products`'s top app
  * bar; the `AuthGate` above this NavHost handles the post-sign-out
@@ -37,7 +39,7 @@ fun MainNavHost() {
             ProductsListScreen(
                 onAddClick = { navController.navigate(Route.Posts) },
                 onProductClick = { id ->
-                    navController.navigate(Route.EditProduct(id = id.raw))
+                    navController.navigate(Route.ProductDetails(id = id.raw))
                 },
                 onSignOutClick = signOutViewModel::onSignOutClicked,
             )
@@ -49,6 +51,18 @@ fun MainNavHost() {
                         popUpTo(Route.Products)
                     }
                 },
+                onOpenExisting = { productId ->
+                    navController.navigate(Route.ProductDetails(id = productId)) {
+                        popUpTo(Route.Products)
+                    }
+                },
+                onBackClick = { navController.popBackStack() },
+            )
+        }
+        composable<Route.ProductDetails> { entry ->
+            val args = entry.toRoute<Route.ProductDetails>()
+            ProductDetailsScreen(
+                id = args.id,
                 onBackClick = { navController.popBackStack() },
             )
         }

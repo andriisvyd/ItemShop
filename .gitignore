@@ -21,4 +21,5 @@ secrets.properties
 .idea/navEditor.xml
 .idea/assetWizardSettings.xml
 .idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml
 .idea/jarRepositories.xml

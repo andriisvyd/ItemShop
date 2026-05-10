@@ -19,10 +19,16 @@ sealed interface Route {
     data object Posts : Route
 
     /**
-     * Edit (or create) a product. The `id` is the originating Instagram
-     * media id; the screen looks up the product locally and falls back to
-     * fetching the post and building a fresh draft if no local record
-     * exists yet.
+     * Read-only details for an existing product. `id` is the originating
+     * Instagram media id (which is also the product's primary key).
+     */
+    @Serializable
+    data class ProductDetails(val id: String) : Route
+
+    /**
+     * Create a product from an Instagram post. `id` is the post id. The
+     * screen will refuse to clobber an existing product and prompts the
+     * user to open it for viewing instead.
      */
     @Serializable
     data class EditProduct(val id: String) : Route

@@ -4,6 +4,7 @@ import com.svyd.itemshop.feature.auth.AuthGateViewModel
 import com.svyd.itemshop.feature.auth.LoginViewModel
 import com.svyd.itemshop.feature.auth.SignOutViewModel
 import com.svyd.itemshop.feature.posts.PostsListViewModel
+import com.svyd.itemshop.feature.products.details.ProductDetailsViewModel
 import com.svyd.itemshop.feature.products.edit.EditProductViewModel
 import com.svyd.itemshop.feature.products.list.ProductsListViewModel
 import org.koin.core.module.dsl.viewModel
@@ -24,16 +25,19 @@ val presentationModule = module {
     viewModelOf(::ProductsListViewModel)
     viewModelOf(::PostsListViewModel)
 
-    // EditProductViewModel takes its target id from the navigation route,
-    // so it's bound with an explicit parameter resolver instead of
-    // `viewModelOf`.
+    // EditProductViewModel and ProductDetailsViewModel take their target
+    // id from the navigation route, so they're bound with explicit
+    // parameter resolvers instead of `viewModelOf`.
     viewModel { (id: String) ->
         EditProductViewModel(
             id = id,
-            getProduct = get(),
             getInstagramPost = get(),
             buildDraftFromPost = get(),
             saveProduct = get(),
         )
+    }
+
+    viewModel { (id: String) ->
+        ProductDetailsViewModel(id = id, getProduct = get())
     }
 }

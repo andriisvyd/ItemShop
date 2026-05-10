@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,8 +27,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,14 +48,27 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PostsListScreen(
     onPostSelected: (postId: String) -> Unit,
+    onOpenExisting: (productId: String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PostsListViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state) {
+        val pending = (state as? PostsListUiState.Content)?.pendingNavigateToEditId ?: return@LaunchedEffect
+        onPostSelected(pending)
+        viewModel.onNavigationConsumed()
+    }
+
     PostsListScreen(
         state = state,
-        onPostSelected = onPostSelected,
+        onPostClicked = viewModel::onPostClicked,
+        onPromptDismissed = viewModel::onPromptDismissed,
+        onOpenExisting = { id ->
+            viewModel.onPromptDismissed()
+            onOpenExisting(id)
+        },
         onBackClick = onBackClick,
         onRetry = viewModel::refresh,
         modifier = modifier,
@@ -63,7 +79,9 @@ fun PostsListScreen(
 @Composable
 internal fun PostsListScreen(
     state: PostsListUiState,
-    onPostSelected: (postId: String) -> Unit,
+    onPostClicked: (postId: String) -> Unit,
+    onPromptDismissed: () -> Unit,
+    onOpenExisting: (productId: String) -> Unit,
     onBackClick: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
@@ -84,11 +102,20 @@ internal fun PostsListScreen(
         when (state) {
             PostsListUiState.Loading -> CenteredProgress(padding)
             PostsListUiState.Empty -> EmptyState(padding)
-            is PostsListUiState.Content -> PostsGrid(
-                posts = state.posts,
-                onPostSelected = onPostSelected,
-                contentPadding = padding,
-            )
+            is PostsListUiState.Content -> {
+                PostsGrid(
+                    posts = state.posts,
+                    onPostClicked = onPostClicked,
+                    contentPadding = padding,
+                )
+                state.prompt?.let { prompt ->
+                    AlreadyExistsDialog(
+                        prompt = prompt,
+                        onConfirm = { onOpenExisting(prompt.productId) },
+                        onDismiss = onPromptDismissed,
+                    )
+                }
+            }
             is PostsListUiState.Error -> ErrorState(
                 message = state.message,
                 onRetry = onRetry,
@@ -96,6 +123,27 @@ internal fun PostsListScreen(
             )
         }
     }
+}
+
+@Composable
+private fun AlreadyExistsDialog(
+    prompt: ExistingProductPrompt,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.post_already_product_title)) },
+        text = {
+            Text(stringResource(R.string.post_already_product_message, prompt.productTitle))
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text(stringResource(R.string.action_open)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
+        },
+    )
 }
 
 @Composable
@@ -144,7 +192,7 @@ private fun EmptyState(contentPadding: PaddingValues) {
 @Composable
 private fun PostsGrid(
     posts: List<InstagramPost>,
-    onPostSelected: (postId: String) -> Unit,
+    onPostClicked: (postId: String) -> Unit,
     contentPadding: PaddingValues,
 ) {
     LazyVerticalGrid(
@@ -160,7 +208,7 @@ private fun PostsGrid(
         modifier = Modifier.fillMaxSize(),
     ) {
         items(items = posts, key = { it.id }) { post ->
-            PostThumbnail(post = post, onClick = { onPostSelected(post.id) })
+            PostThumbnail(post = post, onClick = { onPostClicked(post.id) })
         }
     }
 }

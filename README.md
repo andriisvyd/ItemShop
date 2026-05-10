@@ -74,6 +74,9 @@ screen:
   that we currently use).
 - **Dev mode.** Only invited testers can sign in. Going public
   needs Tech Provider verification and per-scope App Review.
+- **No edit mode.** Tapping a product opens a read-only details
+  screen. Editing existing products is a v1+ enhancement (see
+  below).
 
 ## Deferred from v1 (intentional, do later)
 
@@ -108,9 +111,10 @@ screen:
   `https://item-shop.pages.dev/oauth/callback` (purely cosmetic;
   the App Link intercepts before the page renders, but currently
   Cloudflare's 404 briefly flashes during the hand-off).
-- **Re-pick UX**: confirmation dialog when a Posts grid tap leads
-  to a product that already exists ("This post is already a
-  product, open for editing?"). Currently it opens silently.
+- **Edit existing products**: add an "Edit" affordance on the
+  details screen that re-enters the EditProduct flow against the
+  same id. Currently details are read-only; the EditProduct flow
+  is reserved for product creation from a post.
 - **Tech Provider verification + App Review** when going public.
 
 ## Architecture decisions worth remembering
