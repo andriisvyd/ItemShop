@@ -168,7 +168,7 @@ private fun PostsGrid(
 @Composable
 private fun PostThumbnail(post: InstagramPost, onClick: () -> Unit) {
     AsyncImage(
-        model = post.thumbnailUrl ?: post.mediaUrl,
+        model = post.imageUrl,
         contentDescription = post.caption,
         contentScale = ContentScale.Crop,
         modifier = Modifier

@@ -25,7 +25,7 @@ class BuildProductDraftFromPostUseCase {
         id = ProductId(post.id),
         title = extractTitle(post.caption),
         price = Price.parseFromCaption(post.caption),
-        coverImageUrl = post.thumbnailUrl ?: post.mediaUrl,
+        coverImageUrl = post.imageUrl,
     )
 
     private fun extractTitle(caption: String?): String {

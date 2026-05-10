@@ -34,6 +34,6 @@ internal class InstagramGraphApi(
     companion object {
         private const val DEFAULT_LIMIT = 25
         private const val DEFAULT_MEDIA_FIELDS =
-            "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp"
+            "id,caption,media_url,thumbnail_url,timestamp"
     }
 }

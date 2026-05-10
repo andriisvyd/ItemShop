@@ -1,34 +1,28 @@
 package com.svyd.itemshop.data.posts.mapper
 
 import com.svyd.itemshop.data.posts.remote.dto.MediaDto
-import com.svyd.itemshop.domain.posts.InstagramMediaType
 import com.svyd.itemshop.domain.posts.InstagramPost
 import kotlinx.datetime.Instant
 
 /**
- * Returns null for media items that don't have a usable image URL or
- * timestamp. Callers (the repository) filter these out rather than
- * surfacing partially-broken posts to the UI.
+ * Returns null for media items without a usable image URL or timestamp.
+ * Callers (the repository) filter these out rather than surfacing
+ * partially-broken posts to the UI.
+ *
+ * Image resolution: prefer `thumbnail_url` (always an image, even for
+ * video posts); fall back to `media_url` (the post's own media for image
+ * posts). Carousel albums have neither at the top level and so are
+ * dropped here — full carousel support is a follow-up.
  */
 internal fun MediaDto.toDomainOrNull(): InstagramPost? {
-    val mediaUrl = mediaUrl ?: return null
+    val imageUrl = thumbnailUrl ?: mediaUrl ?: return null
     val timestamp = timestamp?.let(::parseInstantOrNull) ?: return null
     return InstagramPost(
         id = id,
         caption = caption,
-        mediaType = mapMediaType(mediaType),
-        mediaUrl = mediaUrl,
-        thumbnailUrl = thumbnailUrl,
-        permalink = permalink ?: "",
+        imageUrl = imageUrl,
         timestamp = timestamp,
     )
-}
-
-private fun mapMediaType(raw: String?): InstagramMediaType = when (raw) {
-    "IMAGE" -> InstagramMediaType.Image
-    "VIDEO" -> InstagramMediaType.Video
-    "CAROUSEL_ALBUM" -> InstagramMediaType.CarouselAlbum
-    else -> InstagramMediaType.Unknown
 }
 
 /**

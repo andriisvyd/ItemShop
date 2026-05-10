@@ -13,10 +13,8 @@ internal data class MediaListResponseDto(
 internal data class MediaDto(
     @SerialName("id") val id: String,
     @SerialName("caption") val caption: String? = null,
-    @SerialName("media_type") val mediaType: String? = null,
     @SerialName("media_url") val mediaUrl: String? = null,
     @SerialName("thumbnail_url") val thumbnailUrl: String? = null,
-    @SerialName("permalink") val permalink: String? = null,
     @SerialName("timestamp") val timestamp: String? = null,
 )
 
