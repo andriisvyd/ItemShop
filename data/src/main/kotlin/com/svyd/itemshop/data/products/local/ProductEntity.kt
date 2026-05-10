@@ -16,7 +16,6 @@ import androidx.room.PrimaryKey
 internal data class ProductEntity(
     @PrimaryKey val id: String,
     val title: String,
-    val description: String,
     val priceAmountMinor: Long?,
     val priceCurrencySymbol: String?,
     val coverImageUrl: String?,

@@ -51,7 +51,6 @@ class EditProductViewModel(
                 form = ProductFormState(
                     productId = existing.id.raw,
                     title = existing.title,
-                    description = existing.description,
                     priceAmount = existing.price?.let(::formatAmount).orEmpty(),
                     priceCurrency = existing.price?.currency?.raw.orEmpty(),
                     coverImageUrl = existing.coverImageUrl,
@@ -73,7 +72,6 @@ class EditProductViewModel(
                     form = ProductFormState(
                         productId = draft.id.raw,
                         title = draft.title,
-                        description = draft.description,
                         priceAmount = draft.price?.let(::formatAmount).orEmpty(),
                         priceCurrency = draft.price?.currency?.raw.orEmpty(),
                         coverImageUrl = draft.coverImageUrl,
@@ -86,7 +84,6 @@ class EditProductViewModel(
     }
 
     fun onTitleChange(value: String) = updateForm { it.copy(title = value, titleError = null) }
-    fun onDescriptionChange(value: String) = updateForm { it.copy(description = value) }
 
     fun onPriceAmountChange(value: String) {
         val sanitized = value.filter { it.isDigit() || it == '.' || it == ',' }
@@ -110,7 +107,6 @@ class EditProductViewModel(
         val draft = ProductDraft(
             id = ProductId(current.form.productId),
             title = current.form.title,
-            description = current.form.description,
             price = price,
             coverImageUrl = current.form.coverImageUrl,
         )

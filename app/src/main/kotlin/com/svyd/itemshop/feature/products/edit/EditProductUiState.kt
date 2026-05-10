@@ -21,7 +21,6 @@ sealed interface EditProductUiState {
 data class ProductFormState(
     val productId: String,
     val title: String = "",
-    val description: String = "",
     val priceAmount: String = "",
     val priceCurrency: String = "",
     val coverImageUrl: String? = null,

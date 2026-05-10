@@ -10,7 +10,6 @@ import kotlinx.datetime.Instant
 internal fun ProductEntity.toDomain(): Product = Product(
     id = ProductId(id),
     title = title,
-    description = description,
     price = composePrice(priceAmountMinor, priceCurrencySymbol),
     coverImageUrl = coverImageUrl,
     createdAt = Instant.fromEpochMilliseconds(createdAtEpochMs),
@@ -20,7 +19,6 @@ internal fun ProductEntity.toDomain(): Product = Product(
 internal fun Product.toEntity(): ProductEntity = ProductEntity(
     id = id.raw,
     title = title,
-    description = description,
     priceAmountMinor = price?.amountMinor,
     priceCurrencySymbol = price?.currency?.raw,
     coverImageUrl = coverImageUrl,

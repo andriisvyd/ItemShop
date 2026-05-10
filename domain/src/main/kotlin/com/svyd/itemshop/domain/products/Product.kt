@@ -10,7 +10,6 @@ import kotlinx.datetime.Instant
 data class Product(
     val id: ProductId,
     val title: String,
-    val description: String,
     val price: Price?,
     val coverImageUrl: String?,
     val createdAt: Instant,

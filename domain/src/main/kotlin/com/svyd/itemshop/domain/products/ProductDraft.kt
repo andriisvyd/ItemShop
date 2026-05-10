@@ -9,7 +9,6 @@ package com.svyd.itemshop.domain.products
 data class ProductDraft(
     val id: ProductId,
     val title: String = "",
-    val description: String = "",
     val price: Price? = null,
     val coverImageUrl: String? = null,
 )

@@ -30,7 +30,6 @@ class SaveProductUseCase(
         val product = Product(
             id = draft.id,
             title = title,
-            description = draft.description,
             price = draft.price,
             coverImageUrl = draft.coverImageUrl,
             createdAt = existing?.createdAt ?: now,

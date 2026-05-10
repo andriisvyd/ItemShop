@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -67,7 +66,6 @@ fun EditProductScreen(
         state = state,
         onBackClick = onBackClick,
         onTitleChange = viewModel::onTitleChange,
-        onDescriptionChange = viewModel::onDescriptionChange,
         onPriceAmountChange = viewModel::onPriceAmountChange,
         onPriceCurrencyChange = viewModel::onPriceCurrencyChange,
         onSaveClick = viewModel::onSaveClick,
@@ -81,7 +79,6 @@ internal fun EditProductScreen(
     state: EditProductUiState,
     onBackClick: () -> Unit,
     onTitleChange: (String) -> Unit,
-    onDescriptionChange: (String) -> Unit,
     onPriceAmountChange: (String) -> Unit,
     onPriceCurrencyChange: (String) -> Unit,
     onSaveClick: () -> Unit,
@@ -123,7 +120,6 @@ internal fun EditProductScreen(
             is EditProductUiState.Editing -> EditingForm(
                 state = state,
                 onTitleChange = onTitleChange,
-                onDescriptionChange = onDescriptionChange,
                 onPriceAmountChange = onPriceAmountChange,
                 onPriceCurrencyChange = onPriceCurrencyChange,
                 contentPadding = padding,
@@ -136,7 +132,6 @@ internal fun EditProductScreen(
 private fun EditingForm(
     state: EditProductUiState.Editing,
     onTitleChange: (String) -> Unit,
-    onDescriptionChange: (String) -> Unit,
     onPriceAmountChange: (String) -> Unit,
     onPriceCurrencyChange: (String) -> Unit,
     contentPadding: PaddingValues,
@@ -197,15 +192,6 @@ private fun EditingForm(
                 style = MaterialTheme.typography.bodySmall,
             )
         }
-
-        OutlinedTextField(
-            value = state.form.description,
-            onValueChange = onDescriptionChange,
-            label = { Text(stringResource(R.string.edit_product_field_description)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(160.dp),
-        )
 
         state.saveError?.let { msg ->
             Text(

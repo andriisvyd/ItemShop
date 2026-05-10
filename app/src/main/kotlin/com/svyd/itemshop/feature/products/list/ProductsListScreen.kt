@@ -227,16 +227,6 @@ private fun ProductCard(product: Product, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
-            if (product.description.isNotBlank()) {
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = product.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
         }
     }
 }
