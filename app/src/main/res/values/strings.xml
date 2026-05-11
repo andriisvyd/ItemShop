@@ -31,11 +31,42 @@
 
     <!-- Product details -->
     <string name="product_details_title">Product</string>
+    <string name="product_details_shipping_section_title">Shipping details</string>
+
+    <!-- Product status labels -->
+    <string name="status_available">Available</string>
+    <string name="status_ready_to_ship">Ready to ship</string>
+    <string name="status_shipped">Shipped</string>
+
+    <!-- Status transition actions -->
+    <string name="action_mark_ready_to_ship">Mark ready to ship</string>
+    <string name="action_ship">Ship</string>
+    <string name="action_revert_to_available">Revert to Available</string>
+    <string name="action_revert_to_ready_to_ship">Revert to Ready to ship</string>
+
+    <!-- Revert confirmations -->
+    <string name="revert_to_available_title">Revert to Available?</string>
+    <string name="revert_to_available_message">The shipping details collected for this product will be discarded.</string>
+    <string name="revert_to_ready_to_ship_title">Revert to Ready to ship?</string>
+    <string name="revert_to_ready_to_ship_message">Move this product back to Ready to ship.</string>
+
+    <!-- Shipping sheet -->
+    <string name="shipping_sheet_title">Shipping details</string>
+    <string name="shipping_field_full_name">Full name</string>
+    <string name="shipping_field_phone">Phone</string>
+    <string name="shipping_field_city">City</string>
+    <string name="shipping_field_pickup_type">Pickup at</string>
+    <string name="shipping_pickup_post_office">Post office</string>
+    <string name="shipping_pickup_parcel_locker">Parcel locker</string>
+    <string name="shipping_field_pickup_number">Number</string>
+    <string name="shipping_save">Save</string>
 
     <!-- Errors / generic actions -->
     <string name="error_network">Network error. Please check your connection.</string>
     <string name="error_unknown">Something went wrong.</string>
+    <string name="error_required_field">Required</string>
     <string name="action_retry">Retry</string>
     <string name="action_open">Open</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_confirm">Confirm</string>
 </resources>

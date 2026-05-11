@@ -38,6 +38,13 @@ val presentationModule = module {
     }
 
     viewModel { (id: String) ->
-        ProductDetailsViewModel(id = id, getProduct = get())
+        ProductDetailsViewModel(
+            id = id,
+            getProduct = get(),
+            markReadyToShip = get(),
+            markShipped = get(),
+            revertToReadyToShip = get(),
+            revertToAvailable = get(),
+        )
     }
 }

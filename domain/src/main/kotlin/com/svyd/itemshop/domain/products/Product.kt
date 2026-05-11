@@ -12,6 +12,7 @@ data class Product(
     val title: String,
     val price: Price?,
     val coverImageUrl: String?,
+    val status: ProductStatus,
     val createdAt: Instant,
     val updatedAt: Instant,
 )

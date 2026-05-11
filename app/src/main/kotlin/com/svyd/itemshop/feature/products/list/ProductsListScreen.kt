@@ -49,6 +49,8 @@ import coil3.compose.AsyncImage
 import com.svyd.itemshop.R
 import com.svyd.itemshop.domain.products.Product
 import com.svyd.itemshop.domain.products.ProductId
+import com.svyd.itemshop.domain.products.ProductStatus
+import com.svyd.itemshop.ui.components.StatusBadge
 import com.svyd.itemshop.ui.format.formatForDisplay
 import org.koin.androidx.compose.koinViewModel
 
@@ -202,14 +204,26 @@ private fun ProductCard(product: Product, onClick: () -> Unit) {
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             product.coverImageUrl?.let { url ->
-                AsyncImage(
-                    model = url,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .clip(RoundedCornerShape(12.dp)),
-                )
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    AsyncImage(
+                        model = url,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(12.dp)),
+                    )
+                    // Status badge is a noisy overlay for the default
+                    // status; show only when the product is in flight.
+                    if (product.status !is ProductStatus.Available) {
+                        StatusBadge(
+                            status = product.status,
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(8.dp),
+                        )
+                    }
+                }
                 Spacer(Modifier.height(12.dp))
             }
             Text(
