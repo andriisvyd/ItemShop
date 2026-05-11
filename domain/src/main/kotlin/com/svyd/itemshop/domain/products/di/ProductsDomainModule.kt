@@ -3,7 +3,11 @@ package com.svyd.itemshop.domain.products.di
 import com.svyd.itemshop.domain.products.usecase.BuildProductDraftFromPostUseCase
 import com.svyd.itemshop.domain.products.usecase.DeleteProductUseCase
 import com.svyd.itemshop.domain.products.usecase.GetProductUseCase
+import com.svyd.itemshop.domain.products.usecase.MarkReadyToShipUseCase
+import com.svyd.itemshop.domain.products.usecase.MarkShippedUseCase
 import com.svyd.itemshop.domain.products.usecase.ObserveProductsUseCase
+import com.svyd.itemshop.domain.products.usecase.RevertToAvailableUseCase
+import com.svyd.itemshop.domain.products.usecase.RevertToReadyToShipUseCase
 import com.svyd.itemshop.domain.products.usecase.SaveProductUseCase
 import kotlinx.datetime.Clock
 import org.koin.core.module.dsl.factoryOf
@@ -20,4 +24,10 @@ val productsDomainModule = module {
     factoryOf(::SaveProductUseCase)
     factoryOf(::DeleteProductUseCase)
     factoryOf(::BuildProductDraftFromPostUseCase)
+
+    // Status transitions.
+    factoryOf(::MarkReadyToShipUseCase)
+    factoryOf(::MarkShippedUseCase)
+    factoryOf(::RevertToReadyToShipUseCase)
+    factoryOf(::RevertToAvailableUseCase)
 }

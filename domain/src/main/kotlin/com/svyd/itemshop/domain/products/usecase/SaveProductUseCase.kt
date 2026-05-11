@@ -4,6 +4,7 @@ import com.svyd.itemshop.domain.common.DomainError
 import com.svyd.itemshop.domain.common.DomainResult
 import com.svyd.itemshop.domain.products.Product
 import com.svyd.itemshop.domain.products.ProductDraft
+import com.svyd.itemshop.domain.products.ProductStatus
 import com.svyd.itemshop.domain.products.ProductsRepository
 import kotlinx.datetime.Clock
 
@@ -32,6 +33,10 @@ class SaveProductUseCase(
             title = title,
             price = draft.price,
             coverImageUrl = draft.coverImageUrl,
+            // Preserve the existing status if any (defensive; PostsList
+            // already prevents overwriting an existing product). New
+            // products always start as Available.
+            status = existing?.status ?: ProductStatus.Available,
             createdAt = existing?.createdAt ?: now,
             updatedAt = now,
         )
