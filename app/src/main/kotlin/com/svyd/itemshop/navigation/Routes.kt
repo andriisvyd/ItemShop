@@ -12,28 +12,20 @@ sealed interface Route {
     @Serializable
     data object Login : Route
 
-    /** Single landing page for the signed-in user; replaces Products + Posts. */
+    /** Single landing page for the signed-in user. */
     @Serializable
     data object Home : Route
 
+    // The following routes are no longer reachable. Kept declared so the
+    // legacy `feature/posts/` and `feature/products/{list,edit}/` packages
+    // continue to compile until they're deleted in the upcoming cleanup
+    // pass.
     @Serializable
     data object Products : Route
 
     @Serializable
     data object Posts : Route
 
-    /**
-     * Read-only details for an existing product. `id` is the originating
-     * Instagram media id (which is also the product's primary key).
-     */
-    @Serializable
-    data class ProductDetails(val id: String) : Route
-
-    /**
-     * Create a product from an Instagram post. `id` is the post id. The
-     * screen will refuse to clobber an existing product and prompts the
-     * user to open it for viewing instead.
-     */
     @Serializable
     data class EditProduct(val id: String) : Route
 }

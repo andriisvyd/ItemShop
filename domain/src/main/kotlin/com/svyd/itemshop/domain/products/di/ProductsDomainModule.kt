@@ -6,6 +6,7 @@ import com.svyd.itemshop.domain.products.usecase.GetProductUseCase
 import com.svyd.itemshop.domain.products.usecase.MarkReadyToShipUseCase
 import com.svyd.itemshop.domain.products.usecase.MarkShippedUseCase
 import com.svyd.itemshop.domain.products.usecase.ObserveProductsUseCase
+import com.svyd.itemshop.domain.products.usecase.RestoreProductUseCase
 import com.svyd.itemshop.domain.products.usecase.RevertToAvailableUseCase
 import com.svyd.itemshop.domain.products.usecase.RevertToReadyToShipUseCase
 import com.svyd.itemshop.domain.products.usecase.SaveProductUseCase
@@ -37,6 +38,7 @@ fun productsDomainModule(fallbackProductTitle: String): Module = module {
     factoryOf(::MarkShippedUseCase)
     factoryOf(::RevertToReadyToShipUseCase)
     factoryOf(::RevertToAvailableUseCase)
+    factoryOf(::RestoreProductUseCase)
 
     factory {
         SyncProductsFromInstagramUseCase(

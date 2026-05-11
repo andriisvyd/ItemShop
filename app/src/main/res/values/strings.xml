@@ -7,20 +7,22 @@
     <string name="login_with_instagram">Continue with Instagram</string>
     <string name="login_error_generic">Sign-in failed. Please try again.</string>
 
-    <!-- Products -->
-    <string name="products_title">Your products</string>
+    <!-- Products (legacy, unused by current screens) -->
+    <string name="products_title">CATTT</string>
     <string name="products_empty_title">No products yet</string>
     <string name="products_empty_subtitle">Tap + to create one from an Instagram post.</string>
     <string name="products_add">Add product</string>
-    <string name="products_logout">Sign out</string>
+    <string name="products_logout">Всім пока 😺</string>
 
-    <!-- Home (replaces Products + Posts) -->
-    <string name="home_title">Your products</string>
-    <string name="home_empty_title">No posts yet</string>
-    <string name="home_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
-    <string name="home_first_sync_in_progress">Syncing your posts…</string>
-    <string name="home_first_sync_failed">Couldn\'t sync your posts.</string>
-    <string name="home_refresh_failed">Couldn\'t refresh.</string>
+    <!-- Home -->
+    <!-- home_title is no longer used at runtime: the top app bar renders the
+         user's Instagram handle dynamically. Kept around as a fallback. -->
+    <string name="home_title">CATTT</string>
+    <string name="home_empty_title">Поки що пусто</string>
+    <string name="home_empty_subtitle">Чекаємо на нові скарби 💔</string>
+    <string name="home_first_sync_in_progress">Підвантажуємо скарби…</string>
+    <string name="home_first_sync_failed">Інстаграмчик щось вередує 😿</string>
+    <string name="home_refresh_failed">Інстаграмчик щось вередує 😿</string>
     <string name="fallback_product_title">Речиночка без назви</string>
 
     <!-- Posts -->
@@ -38,44 +40,58 @@
     <string name="post_already_product_title">Already in your shop</string>
     <string name="post_already_product_message">\"%1$s\" is already a product. Open it?</string>
 
-    <!-- Product details -->
-    <string name="product_details_title">Product</string>
-    <string name="product_details_shipping_section_title">Shipping details</string>
+    <!-- Product info sheet (replaces the old details screen) -->
+    <string name="product_info_sheet_shipping_section_title">Куди прямуємо 📍</string>
+
+    <!-- Status-transition snackbars -->
+    <string name="snackbar_marked_ready_to_ship">Супер! Готуємо до відправки 📦</string>
+    <string name="snackbar_shipped">Полетіло до красуні 🕊️</string>
+    <string name="snackbar_reverted_to_available">Знову в наявності! Шукаємо власницю 🎀</string>
+    <string name="snackbar_reverted_to_ready_to_ship">Перепаковуємо 📦</string>
+    <string name="action_undo">Ой, назад</string>
 
     <!-- Product status labels -->
-    <string name="status_available">Available</string>
-    <string name="status_ready_to_ship">Ready to ship</string>
-    <string name="status_shipped">Shipped</string>
+    <string name="status_available">В наявності</string>
+    <string name="status_ready_to_ship">Пакуємо</string>
+    <string name="status_shipped">В дорозі</string>
 
     <!-- Status transition actions -->
-    <string name="action_mark_ready_to_ship">Mark ready to ship</string>
-    <string name="action_ship">Ship</string>
-    <string name="action_revert_to_available">Revert to Available</string>
-    <string name="action_revert_to_ready_to_ship">Revert to Ready to ship</string>
+    <string name="action_ship">Відправлено! 🕊️</string>
+    <string name="action_revert_to_available">Повернути на вітрину 🎀</string>
+    <string name="action_revert_to_ready_to_ship">На перепакування 📦</string>
 
-    <!-- Revert confirmations -->
-    <string name="revert_to_available_title">Revert to Available?</string>
-    <string name="revert_to_available_message">The shipping details collected for this product will be discarded.</string>
-    <string name="revert_to_ready_to_ship_title">Revert to Ready to ship?</string>
-    <string name="revert_to_ready_to_ship_message">Move this product back to Ready to ship.</string>
+    <!-- Inline revert confirmations (rendered inside the info sheet) -->
+    <string name="revert_to_available_title">Точно скасовуємо?</string>
+    <string name="revert_to_available_message">Всі дані для відправки зникнуть 😿</string>
+    <string name="revert_to_ready_to_ship_title">Повертаємо назад?</string>
+    <string name="revert_to_ready_to_ship_message">Посилка більше не буде позначена як відправлена.</string>
+    <string name="alert_revert_confirm">Так, скасувати</string>
+    <string name="alert_revert_dismiss">Ні, залишити</string>
 
     <!-- Shipping sheet -->
-    <string name="shipping_sheet_title">Shipping details</string>
-    <string name="shipping_field_full_name">Full name</string>
-    <string name="shipping_field_phone">Phone</string>
-    <string name="shipping_field_city">City</string>
-    <string name="shipping_field_pickup_type">Pickup at</string>
-    <string name="shipping_pickup_post_office">Post office</string>
-    <string name="shipping_pickup_parcel_locker">Parcel locker</string>
-    <string name="shipping_field_pickup_number">Number</string>
-    <string name="shipping_save">Save</string>
+    <string name="shipping_sheet_title">Куди відправляємо цю красу? 📝</string>
+    <string name="shipping_field_full_name">Ім\'я красуні (ПІБ)</string>
+    <string name="shipping_field_full_name_placeholder">напр. Котик Ірина</string>
+    <string name="shipping_field_phone">Номерок телефону</string>
+    <string name="shipping_field_phone_placeholder">+380…</string>
+    <string name="shipping_field_city">Місто</string>
+    <string name="shipping_field_city_placeholder">куди їдемо?</string>
+    <string name="shipping_field_pickup_type">Як відправляємо?</string>
+    <string name="shipping_pickup_post_office">Відділення</string>
+    <string name="shipping_pickup_parcel_locker">Поштомат</string>
+    <string name="shipping_field_pickup_number">Номер відділення / поштомату</string>
+    <string name="shipping_save">Зберегти красу</string>
+
+    <!-- Info sheet titles -->
+    <string name="info_sheet_title_ready_to_ship">Готуємо пакуночок 🎀</string>
+    <string name="info_sheet_title_shipped">Деталі замовлення ✨</string>
 
     <!-- Errors / generic actions -->
-    <string name="error_network">Network error. Please check your connection.</string>
-    <string name="error_unknown">Something went wrong.</string>
-    <string name="error_required_field">Required</string>
-    <string name="action_retry">Retry</string>
+    <string name="error_network">За інтернет заплатила?</string>
+    <string name="error_unknown">Трясця, щось не робе</string>
+    <string name="error_required_field">Чогось не вистачає… 🤔</string>
+    <string name="action_retry">Давай по новій</string>
     <string name="action_open">Open</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Кіт передумав 🗿</string>
+    <string name="action_confirm">Єсь 😼</string>
 </resources>

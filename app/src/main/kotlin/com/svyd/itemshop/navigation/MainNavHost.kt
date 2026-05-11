@@ -8,21 +8,18 @@ import androidx.navigation.toRoute
 import com.svyd.itemshop.feature.auth.SignOutViewModel
 import com.svyd.itemshop.feature.home.HomeScreen
 import com.svyd.itemshop.feature.posts.PostsListScreen
-import com.svyd.itemshop.feature.products.details.ProductDetailsScreen
 import com.svyd.itemshop.feature.products.edit.EditProductScreen
 import com.svyd.itemshop.feature.products.list.ProductsListScreen
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Navigation graph used when the user is authenticated. Two destinations:
- *   - `Home`: grid of all the user's Instagram posts as products
- *     (auto-synced; replaces the previous Products list + Posts grid).
- *   - `ProductDetails(id)`: read-only details + status transitions for
- *     one product.
+ * Navigation graph used when the user is authenticated.
  *
- * `Route.Products`, `Route.Posts`, `Route.EditProduct` remain declared in
- * `Routes.kt` only until the corresponding feature packages are deleted
- * in 16b. They are no longer reachable.
+ * After collapsing the details screen into inline tile interactions on
+ * the home grid, the only reachable destination is `Route.Home`. The
+ * remaining routes (`Products`, `Posts`, `EditProduct`) stay declared so
+ * the legacy feature packages compile until they're deleted in the
+ * cleanup pass; they are not navigated to from anywhere.
  *
  * Sign-out lives in `Home`'s top app bar; the `AuthGate` above this
  * NavHost handles the post-sign-out transition by re-rendering
@@ -39,22 +36,10 @@ fun MainNavHost() {
     ) {
         composable<Route.Home> {
             HomeScreen(
-                onProductClick = { id ->
-                    navController.navigate(Route.ProductDetails(id = id.raw))
-                },
                 onSignOutClick = signOutViewModel::onSignOutClicked,
             )
         }
-        composable<Route.ProductDetails> { entry ->
-            val args = entry.toRoute<Route.ProductDetails>()
-            ProductDetailsScreen(
-                id = args.id,
-                onBackClick = { navController.popBackStack() },
-            )
-        }
-        // Dead routes kept around so the feature packages compile until
-        // their files are removed in 16b. They are not reachable from
-        // anywhere in the graph.
+        // Dead routes — see top-of-file note.
         composable<Route.Products> {
             ProductsListScreen(
                 onAddClick = {},
