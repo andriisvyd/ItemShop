@@ -9,7 +9,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface ProductDao {
 
-    @Query("SELECT * FROM products ORDER BY updatedAtEpochMs DESC")
+    // Ordered by `createdAt` so the grid reflects the order Instagram
+    // returns posts in (chronological newest-first) and stays stable across
+    // syncs — `updatedAt` would shift on every reconciliation because the
+    // sync re-reads title/price/cover from the caption on every pass.
+    @Query("SELECT * FROM products ORDER BY createdAtEpochMs DESC")
     fun observeAll(): Flow<List<ProductEntity>>
 
     @Query("SELECT * FROM products WHERE id = :id")

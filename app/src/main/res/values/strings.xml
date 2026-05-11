@@ -14,6 +14,15 @@
     <string name="products_add">Add product</string>
     <string name="products_logout">Sign out</string>
 
+    <!-- Home (replaces Products + Posts) -->
+    <string name="home_title">Your products</string>
+    <string name="home_empty_title">No posts yet</string>
+    <string name="home_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
+    <string name="home_first_sync_in_progress">Syncing your posts…</string>
+    <string name="home_first_sync_failed">Couldn\'t sync your posts.</string>
+    <string name="home_refresh_failed">Couldn\'t refresh.</string>
+    <string name="fallback_product_title">Речиночка без назви</string>
+
     <!-- Posts -->
     <string name="posts_title">Pick an Instagram post</string>
     <string name="posts_empty_title">No posts found</string>

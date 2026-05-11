@@ -29,7 +29,9 @@ class ItemShopApplication : Application() {
                 // keeps internals encapsulated and lets features migrate
                 // (or move to KMP) without touching the wiring.
                 authDomainModule,
-                productsDomainModule,
+                productsDomainModule(
+                    fallbackProductTitle = getString(R.string.fallback_product_title),
+                ),
                 postsDomainModule,
                 commonDataModule(enableHttpLogging = BuildConfig.DEBUG),
                 authDataModule,

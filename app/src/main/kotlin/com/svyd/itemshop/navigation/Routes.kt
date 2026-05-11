@@ -12,6 +12,10 @@ sealed interface Route {
     @Serializable
     data object Login : Route
 
+    /** Single landing page for the signed-in user; replaces Products + Posts. */
+    @Serializable
+    data object Home : Route
+
     @Serializable
     data object Products : Route
 

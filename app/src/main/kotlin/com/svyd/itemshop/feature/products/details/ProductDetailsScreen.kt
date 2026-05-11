@@ -46,18 +46,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.svyd.itemshop.R
 import com.svyd.itemshop.domain.products.PickupPoint
 import com.svyd.itemshop.domain.products.Product
 import com.svyd.itemshop.domain.products.ProductStatus
 import com.svyd.itemshop.domain.products.ShippingDetails
+import com.svyd.itemshop.ui.components.ProductCoverImage
 import com.svyd.itemshop.ui.components.StatusBadge
 import com.svyd.itemshop.ui.format.formatForDisplay
 import org.koin.androidx.compose.koinViewModel
@@ -219,17 +218,14 @@ private fun ProductBody(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        product.coverImageUrl?.let { url ->
-            AsyncImage(
-                model = url,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(16.dp)),
-            )
-        }
+        ProductCoverImage(
+            product = product,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(16.dp)),
+        )
 
         Text(text = product.title, style = MaterialTheme.typography.headlineSmall)
 

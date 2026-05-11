@@ -3,6 +3,7 @@ package com.svyd.itemshop.di
 import com.svyd.itemshop.feature.auth.AuthGateViewModel
 import com.svyd.itemshop.feature.auth.LoginViewModel
 import com.svyd.itemshop.feature.auth.SignOutViewModel
+import com.svyd.itemshop.feature.home.HomeViewModel
 import com.svyd.itemshop.feature.posts.PostsListViewModel
 import com.svyd.itemshop.feature.products.details.ProductDetailsViewModel
 import com.svyd.itemshop.feature.products.edit.EditProductViewModel
@@ -22,6 +23,7 @@ val presentationModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::SignOutViewModel)
 
+    viewModelOf(::HomeViewModel)
     viewModelOf(::ProductsListViewModel)
     viewModelOf(::PostsListViewModel)
 
