@@ -33,10 +33,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +53,7 @@ import com.svyd.itemshop.domain.products.ProductId
 import com.svyd.itemshop.domain.products.ProductStatus
 import com.svyd.itemshop.ui.components.ProductCoverImage
 import com.svyd.itemshop.ui.components.StatusBadge
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -147,9 +150,15 @@ private fun ContentBody(
     onRefresh: () -> Unit,
     contentPadding: PaddingValues,
 ) {
+    val pullToRefreshState = rememberPullToRefreshState()
+    val scope = rememberCoroutineScope()
     PullToRefreshBox(
-        isRefreshing = state.isRefreshing,
-        onRefresh = onRefresh,
+        isRefreshing = false,
+        onRefresh = {
+            scope.launch { pullToRefreshState.animateToHidden() }
+            onRefresh()
+        },
+        state = pullToRefreshState,
         modifier = Modifier
             .fillMaxSize()
             .padding(contentPadding),
