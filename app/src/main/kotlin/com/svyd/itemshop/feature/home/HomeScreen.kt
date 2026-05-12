@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -40,8 +44,11 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
@@ -69,6 +76,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -84,7 +92,6 @@ import kotlinx.coroutines.flow.Flow
 import com.svyd.itemshop.R
 import com.svyd.itemshop.domain.products.PickupPoint
 import com.svyd.itemshop.domain.products.Product
-import com.svyd.itemshop.domain.products.ProductId
 import com.svyd.itemshop.domain.products.ProductStatus
 import com.svyd.itemshop.domain.products.ShippingDetails
 import com.svyd.itemshop.ui.components.ProductCoverImage
@@ -152,6 +159,8 @@ internal fun HomeScreenContent(
     val revertedToAvailableMessage = stringResource(R.string.snackbar_reverted_to_available)
     val revertedToReadyMessage = stringResource(R.string.snackbar_reverted_to_ready_to_ship)
 
+    var selectedTab by remember { mutableStateOf(HomeTab.Catalogue) }
+
     LaunchedEffect(snackbarEvents) {
         snackbarEvents.collect { event ->
             // Dismiss any in-flight snackbar so the user always sees the
@@ -203,6 +212,34 @@ internal fun HomeScreenContent(
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) { Snackbar(it) } },
+        bottomBar = {
+            if (state is HomeUiState.Content) {
+                NavigationBar {
+                    NavigationBarItem(
+                        selected = selectedTab == HomeTab.Catalogue,
+                        onClick = { selectedTab = HomeTab.Catalogue },
+                        icon = {
+                            Icon(
+                                Icons.Default.PhotoLibrary,
+                                contentDescription = null,
+                            )
+                        },
+                        label = { Text(stringResource(R.string.home_tab_catalogue)) },
+                    )
+                    NavigationBarItem(
+                        selected = selectedTab == HomeTab.ReadyToShip,
+                        onClick = { selectedTab = HomeTab.ReadyToShip },
+                        icon = {
+                            Icon(
+                                Icons.Outlined.Inventory2,
+                                contentDescription = null,
+                            )
+                        },
+                        label = { Text(stringResource(R.string.home_tab_ready_to_ship)) },
+                    )
+                }
+            }
+        },
     ) { padding ->
         when (state) {
             HomeUiState.InitialSync -> CenteredMessage(
@@ -216,12 +253,20 @@ internal fun HomeScreenContent(
                 contentPadding = padding,
             )
             is HomeUiState.Content -> {
-                ContentBody(
-                    state = state,
-                    onProductClick = onProductClick,
-                    onRefresh = onRefresh,
-                    contentPadding = padding,
-                )
+                when (selectedTab) {
+                    HomeTab.Catalogue -> CatalogueTabBody(
+                        state = state,
+                        onProductClick = onProductClick,
+                        onRefresh = onRefresh,
+                        contentPadding = padding,
+                    )
+                    HomeTab.ReadyToShip -> ReadyToShipTabBody(
+                        state = state,
+                        onProductClick = onProductClick,
+                        onRefresh = onRefresh,
+                        contentPadding = padding,
+                    )
+                }
                 PendingTransitionOverlay(
                     state = state,
                     onDismiss = onPendingTransitionDismissed,
@@ -238,6 +283,11 @@ internal fun HomeScreenContent(
             }
         }
     }
+}
+
+private enum class HomeTab {
+    Catalogue,
+    ReadyToShip,
 }
 
 @Composable
@@ -262,7 +312,7 @@ private fun HomeOverflowMenu(onSignOutClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ContentBody(
+private fun CatalogueTabBody(
     state: HomeUiState.Content,
     onProductClick: (Product) -> Unit,
     onRefresh: () -> Unit,
@@ -296,6 +346,160 @@ private fun ContentBody(
                 )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReadyToShipTabBody(
+    state: HomeUiState.Content,
+    onProductClick: (Product) -> Unit,
+    onRefresh: () -> Unit,
+    contentPadding: PaddingValues,
+) {
+    val readyProducts = state.products.filter { it.status is ProductStatus.ReadyToShip }
+    val pullToRefreshState = rememberPullToRefreshState()
+    val scope = rememberCoroutineScope()
+    PullToRefreshBox(
+        isRefreshing = false,
+        onRefresh = {
+            scope.launch { pullToRefreshState.animateToHidden() }
+            onRefresh()
+        },
+        state = pullToRefreshState,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            state.refreshError?.let { msg ->
+                RefreshErrorBanner(message = msg)
+            }
+            state.transitionError?.let { msg ->
+                RefreshErrorBanner(message = msg)
+            }
+            when {
+                readyProducts.isEmpty() -> ReadyToShipEmptyContent()
+                else -> LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    itemsIndexed(
+                        items = readyProducts,
+                        key = { _, product -> product.id.raw },
+                    ) { index, product ->
+                        ReadyToShipQueueRow(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp)
+                                .padding(top = 4.dp)
+                                .clickable(onClick = { onProductClick(product) }),
+                            product = product,
+                        )
+                        if (index < readyProducts.lastIndex) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            HorizontalDivider(
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** Fixed row height for the ready-to-ship queue (explicit 96dp product choice). */
+private val ReadyToShipQueueRowHeight = 96.dp
+
+@Composable
+private fun ReadyToShipQueueRow(
+    modifier: Modifier,
+    product: Product,
+) {
+    val shipping = (product.status as ProductStatus.ReadyToShip).shipping
+    Row(
+        modifier = modifier.height(ReadyToShipQueueRowHeight),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(ReadyToShipQueueRowHeight)
+                .clip(RoundedCornerShape(8.dp)),
+        ) {
+            ProductCoverImage(
+                product = product,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(vertical = 8.dp),
+        ) {
+            Text(
+                text = product.title,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Spacer(modifier = Modifier.weight(1F))
+            Text(
+                text = shipping.fullName,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text(
+                modifier = Modifier.padding(vertical = 2.dp),
+                text = stringResource(
+                    R.string.home_ready_to_ship_phone_city_line,
+                    shipping.phone,
+                    shipping.city,
+                ),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = pickupPointLabel(shipping.pickupPoint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.tertiary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ReadyToShipEmptyContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Inventory2,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(64.dp),
+        )
+        Spacer(Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.home_ready_to_ship_empty_title),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.home_ready_to_ship_empty_subtitle),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

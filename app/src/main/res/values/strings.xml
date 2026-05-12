@@ -20,6 +20,11 @@
     <string name="home_title">CATTT</string>
     <string name="home_empty_title">Поки що пусто</string>
     <string name="home_empty_subtitle">Чекаємо на нові скарби 💔</string>
+    <string name="home_tab_catalogue">Вітрина</string>
+    <string name="home_tab_ready_to_ship">Черга</string>
+    <string name="home_ready_to_ship_empty_title">Зараз нічого везти</string>
+    <string name="home_ready_to_ship_empty_subtitle">Як щось піде в дорогу — побачиш тут 📦</string>
+    <string name="home_ready_to_ship_phone_city_line">%1$s • %2$s</string>
     <string name="home_first_sync_in_progress">Підвантажуємо скарби…</string>
     <string name="home_first_sync_failed">Інстаграмчик щось вередує 😿</string>
     <string name="home_refresh_failed">Інстаграмчик щось вередує 😿</string>
