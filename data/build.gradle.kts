@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
@@ -44,9 +43,11 @@ dependencies {
     // Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    // Koin (for module declarations)
-    implementation(platform(libs.koin.bom))
-    implementation(libs.koin.core)
+    // Koin: each layer module owns its own DI bindings, so :data exposes
+    // Koin `Module` instances. `api` because the return type is part of the
+    // public surface of this module.
+    api(platform(libs.koin.bom))
+    api(libs.koin.core)
     implementation(libs.koin.android)
 
     // Ktor

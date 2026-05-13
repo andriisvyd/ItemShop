@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">Item Shop</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome to Item Shop</string>
+    <string name="login_subtitle">Turn your Instagram posts into shop items.</string>
+    <string name="login_with_instagram">Continue with Instagram</string>
+    <string name="login_error_generic">Sign-in failed. Please try again.</string>
+
+    <!-- Products -->
+    <string name="products_title">Your products</string>
+    <string name="products_empty_title">No products yet</string>
+    <string name="products_empty_subtitle">Tap + to create one from an Instagram post.</string>
+    <string name="products_add">Add product</string>
+    <string name="products_logout">Sign out</string>
+
+    <!-- Home (replaces Products + Posts) -->
+    <string name="home_title">Your products</string>
+    <string name="home_empty_title">No posts yet</string>
+    <string name="home_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
+    <string name="home_first_sync_in_progress">Syncing your posts…</string>
+    <string name="home_first_sync_failed">Couldn\'t sync your posts.</string>
+    <string name="home_refresh_failed">Couldn\'t refresh.</string>
+    <string name="fallback_product_title">Речиночка без назви</string>
+
+    <!-- Posts -->
+    <string name="posts_title">Pick an Instagram post</string>
+    <string name="posts_empty_title">No posts found</string>
+    <string name="posts_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
+
+    <!-- Edit product -->
+    <string name="edit_product_title_create">New product</string>
+    <string name="edit_product_field_title">Title</string>
+    <string name="edit_product_field_price">Price</string>
+    <string name="edit_product_save">Save</string>
+
+    <!-- Already-exists prompt (re-picking a converted post) -->
+    <string name="post_already_product_title">Already in your shop</string>
+    <string name="post_already_product_message">\"%1$s\" is already a product. Open it?</string>
+
+    <!-- Product details -->
+    <string name="product_details_title">Product</string>
+    <string name="product_details_shipping_section_title">Shipping details</string>
+
+    <!-- Product status labels -->
+    <string name="status_available">Available</string>
+    <string name="status_ready_to_ship">Ready to ship</string>
+    <string name="status_shipped">Shipped</string>
+
+    <!-- Status transition actions -->
+    <string name="action_mark_ready_to_ship">Mark ready to ship</string>
+    <string name="action_ship">Ship</string>
+    <string name="action_revert_to_available">Revert to Available</string>
+    <string name="action_revert_to_ready_to_ship">Revert to Ready to ship</string>
+
+    <!-- Revert confirmations -->
+    <string name="revert_to_available_title">Revert to Available?</string>
+    <string name="revert_to_available_message">The shipping details collected for this product will be discarded.</string>
+    <string name="revert_to_ready_to_ship_title">Revert to Ready to ship?</string>
+    <string name="revert_to_ready_to_ship_message">Move this product back to Ready to ship.</string>
+
+    <!-- Shipping sheet -->
+    <string name="shipping_sheet_title">Shipping details</string>
+    <string name="shipping_field_full_name">Full name</string>
+    <string name="shipping_field_phone">Phone</string>
+    <string name="shipping_field_city">City</string>
+    <string name="shipping_field_pickup_type">Pickup at</string>
+    <string name="shipping_pickup_post_office">Post office</string>
+    <string name="shipping_pickup_parcel_locker">Parcel locker</string>
+    <string name="shipping_field_pickup_number">Number</string>
+    <string name="shipping_save">Save</string>
+
+    <!-- Errors / generic actions -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_unknown">Something went wrong.</string>
+    <string name="error_required_field">Required</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_open">Open</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_confirm">Confirm</string>
 </resources>
