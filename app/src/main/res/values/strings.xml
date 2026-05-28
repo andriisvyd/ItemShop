@@ -7,11 +7,7 @@
     <string name="login_with_instagram">Continue with Instagram</string>
     <string name="login_error_generic">Sign-in failed. Please try again.</string>
 
-    <!-- Products (legacy, unused by current screens) -->
-    <string name="products_title">CATTT</string>
-    <string name="products_empty_title">No products yet</string>
-    <string name="products_empty_subtitle">Tap + to create one from an Instagram post.</string>
-    <string name="products_add">Add product</string>
+    <!-- Shared overflow menu -->
     <string name="products_logout">Всім пока 😺</string>
 
     <!-- Home -->
@@ -29,24 +25,6 @@
     <string name="home_first_sync_failed">Інстаграмчик щось вередує 😿</string>
     <string name="home_refresh_failed">Інстаграмчик щось вередує 😿</string>
     <string name="fallback_product_title">Речиночка без назви</string>
-
-    <!-- Posts -->
-    <string name="posts_title">Pick an Instagram post</string>
-    <string name="posts_empty_title">No posts found</string>
-    <string name="posts_empty_subtitle">Once you publish posts on Instagram they will appear here.</string>
-
-    <!-- Edit product -->
-    <string name="edit_product_title_create">New product</string>
-    <string name="edit_product_field_title">Title</string>
-    <string name="edit_product_field_price">Price</string>
-    <string name="edit_product_save">Save</string>
-
-    <!-- Already-exists prompt (re-picking a converted post) -->
-    <string name="post_already_product_title">Already in your shop</string>
-    <string name="post_already_product_message">\"%1$s\" is already a product. Open it?</string>
-
-    <!-- Product info sheet (replaces the old details screen) -->
-    <string name="product_info_sheet_shipping_section_title">Куди прямуємо 📍</string>
 
     <!-- Status-transition snackbars -->
     <string name="snackbar_marked_ready_to_ship">Супер! Готуємо до відправки 📦</string>
@@ -96,7 +74,5 @@
     <string name="error_unknown">Трясця, щось не робе</string>
     <string name="error_required_field">Чогось не вистачає… 🤔</string>
     <string name="action_retry">Давай по новій</string>
-    <string name="action_open">Open</string>
     <string name="action_cancel">Кіт передумав 🗿</string>
-    <string name="action_confirm">Єсь 😼</string>
 </resources>

@@ -12,15 +12,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.svyd.itemshop.domain.auth.AuthState
 import com.svyd.itemshop.feature.auth.AuthGateViewModel
 import com.svyd.itemshop.feature.auth.LoginScreen
-import com.svyd.itemshop.navigation.MainNavHost
+import com.svyd.itemshop.feature.auth.SignOutViewModel
+import com.svyd.itemshop.feature.home.HomeScreen
 import org.koin.androidx.compose.koinViewModel
 
-/**
- * Root composable. Owns the auth gate that decides whether to show the
- * login screen or the post-login navigation graph. Keeps login outside the
- * main NavHost so the navigation graph never has to special-case
- * unauthenticated state.
- */
 @Composable
 fun ItemShopApp() {
     val authViewModel: AuthGateViewModel = koinViewModel()
@@ -30,7 +25,10 @@ fun ItemShopApp() {
         when (authState) {
             AuthState.Unknown -> SplashLoading()
             AuthState.Unauthenticated -> LoginScreen()
-            is AuthState.Authenticated -> MainNavHost()
+            is AuthState.Authenticated -> {
+                val signOutViewModel: SignOutViewModel = koinViewModel()
+                HomeScreen(onSignOutClick = signOutViewModel::onSignOutClicked)
+            }
         }
     }
 }
